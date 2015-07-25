@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
 
 gemspec
-gem 'xkbcommon', path: '../ruby-xkbcommon'
+gem 'libxkbcommon', path: '../ruby-libxkbcommon'
+gem 'uinput', path: '../ruby-uinput'
