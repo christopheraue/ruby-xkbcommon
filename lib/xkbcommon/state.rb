@@ -30,7 +30,7 @@ module Xkbcommon
     end
 
     def press_keys(keys)
-      keys.map{ |key| press_key(key) }.last
+      [*keys].map{ |key| press_key(key) }.last
     end
 
     def release_key(key)
@@ -38,18 +38,19 @@ module Xkbcommon
     end
 
     def release_keys(keys)
-      keys.map{ |key| release_key(key) }.last
+      [*keys].map{ |key| release_key(key) }.last
     end
 
     def utf8_of_key(key)
       utf8_size = 8
       utf8 = FFI::MemoryPointer.new(:char, utf8_size)
       Libxkbcommon.xkb_state_key_get_utf8(to_native, key.code, utf8, utf8_size)
-      utf8.read_string
+      utf8.read_string.force_encoding('UTF-8')
     end
 
     def symbol_for_key(key)
-      Libxkbcommon.xkb_state_key_get_one_sym(to_native, key.code)
+      keysym = Libxkbcommon.xkb_state_key_get_one_sym(to_native, key.code)
+      Symbol.new(@keymap, keysym) if keysym
     end
 
     def modifier_active?(modifier)
