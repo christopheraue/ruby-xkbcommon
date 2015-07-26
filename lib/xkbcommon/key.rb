@@ -1,3 +1,5 @@
+require 'uinput'
+
 module Xkbcommon
   class Key
     class << self
@@ -11,7 +13,7 @@ module Xkbcommon
         @names ||= begin
           keys = Uinput.constants.select{ |c| c.to_s.start_with?('KEY_') }
           keys.map do |c|
-            code = Uinput.const_get(c)
+            code = Uinput.const_get(c) + 8 # about offset 8: http://xkbcommon.org/doc/current/xkbcommon_8h.html#ac29aee92124c08d1953910ab28ee1997
             name = c.to_s[4..-1]
             name = Integer(name) rescue name.to_sym
             [code, name]
@@ -27,12 +29,5 @@ module Xkbcommon
     end
 
     attr_reader :keymap, :code, :name
-
-    def to_utf8_for_state(state)
-      utf8_size = 8
-      utf8 = FFI::MemoryPointer.new(:char, utf8_size)
-      Libxkbcommon.xkb_state_key_get_utf8(state.to_native, code, utf8, utf8_size)
-      utf8.read_string
-    end
   end
 end

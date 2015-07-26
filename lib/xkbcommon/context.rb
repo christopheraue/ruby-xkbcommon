@@ -2,7 +2,7 @@ module Xkbcommon
   class Context
     class << self
       def finalize(native)
-        Libxkbcommon.xkb_context_unref(native)
+        Proc.new { Libxkbcommon.xkb_context_unref(native) }
       end
     end
 
@@ -21,11 +21,11 @@ module Xkbcommon
     def keymap_from_names(rules: nil, model: nil, layout: nil, variant: nil, options: nil,
         flags: Libxkbcommon::XKB_KEYMAP_COMPILE_NO_FLAGS)
       names = Libxkbcommon::XkbRuleNames.new
-      names[:rules] = rules
-      names[:model] = model
-      names[:layout] = layout
-      names[:variant] = variant
-      names[:options] = options
+      names.rules = rules if rules
+      names.model = model if model
+      names.layout = layout if layout
+      names.variant = variant if variant
+      names.options = options if options
 
       Keymap.new(self, Libxkbcommon.xkb_keymap_new_from_names(to_native, names, flags))
     end
