@@ -48,5 +48,7 @@ module Xkbcommon
                            flags: Libxkbcommon::XKB_KEYMAP_COMPILE_NO_FLAGS)
       Keymap.new(self, Libxkbcommon.xkb_keymap_new_from_buffer(to_native, buffer, length, format, flags))
     end
+
+    alias_method :inspect, :to_s
   end
 end

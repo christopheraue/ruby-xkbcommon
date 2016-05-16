@@ -47,5 +47,9 @@ module Xkbcommon
       return if @keys
       @keys = [*keys].freeze
     end
+
+    def inspect
+      "#<#{self.class.name}:0x#{'%014x' % __id__} @name=#{name.inspect} @keys=#{keys.map(&:code).inspect}>"
+    end
   end
 end

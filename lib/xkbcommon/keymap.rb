@@ -24,5 +24,9 @@ module Xkbcommon
     def to_s(format: Libxkbcommon::XKB_KEYMAP_USE_ORIGINAL_FORMAT)
       Libxkbcommon.xkb_keymap_get_as_string(to_native, format)
     end
+
+    def inspect
+      "#<#{self.class.name}:0x#{'%014x' % __id__} @producible_characters=#{characters.keys}>"
+    end
   end
 end

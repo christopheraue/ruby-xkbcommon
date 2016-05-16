@@ -28,5 +28,9 @@ module Xkbcommon
         char.read_string.force_encoding('UTF-8')
       end
     end
+
+    def inspect
+      "#<#{self.class.name}:0x#{'%014x' % __id__} @name=#{name.inspect} @character=#{character.inspect} @keys=#{keys.map(&:code).inspect}>"
+    end
   end
 end

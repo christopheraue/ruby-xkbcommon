@@ -30,5 +30,9 @@ module Xkbcommon
     end
 
     attr_reader :keymap, :code, :scan_code, :name
+
+    def inspect
+      "#<#{self.class.name}:0x#{'%014x' % __id__} @code=#{code} @name=#{name.inspect}>"
+    end
   end
 end
